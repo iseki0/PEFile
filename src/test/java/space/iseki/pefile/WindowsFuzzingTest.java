@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,6 +19,7 @@ import java.util.stream.Stream;
 
 public class WindowsFuzzingTest {
     @TestFactory
+    @Execution(ExecutionMode.CONCURRENT)
     public Stream<DynamicTest> windowsFuzzingTest() {
         Assumptions.assumeTrue(System.getProperty("os.name").toLowerCase().contains("win"));
 
