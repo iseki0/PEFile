@@ -1,0 +1,306 @@
+public final class space/iseki/pefile/Characteristics {
+	public static final field IMAGE_FILE_32BIT_MACHINE S
+	public static final field IMAGE_FILE_AGGRESSIVE_WS_TRIM S
+	public static final field IMAGE_FILE_BYTES_REVERSED_HI S
+	public static final field IMAGE_FILE_BYTES_REVERSED_LO S
+	public static final field IMAGE_FILE_DEBUG_STRIPPED S
+	public static final field IMAGE_FILE_DLL S
+	public static final field IMAGE_FILE_EXECUTABLE_IMAGE S
+	public static final field IMAGE_FILE_LARGE_ADDRESS_AWARE S
+	public static final field IMAGE_FILE_LINE_NUMS_STRIPPED S
+	public static final field IMAGE_FILE_LOCAL_SYMS_STRIPPED S
+	public static final field IMAGE_FILE_NET_RUN_FROM_SWAP S
+	public static final field IMAGE_FILE_RELOCS_STRIPPED S
+	public static final field IMAGE_FILE_REMOVABLE_RUN_FROM_SWAP S
+	public static final field IMAGE_FILE_SYSTEM S
+	public static final field IMAGE_FILE_UP_SYSTEM_ONLY S
+	public static fun toList (S)Ljava/util/List;
+	public static fun toString (S)Ljava/lang/String;
+}
+
+public final class space/iseki/pefile/CoffHeader {
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getCharacteristics ()S
+	public fun getMachine ()S
+	public fun getNumberOfSymbols ()I
+	public fun getNumbersOfSections ()S
+	public fun getPointerToSymbolTable ()I
+	public fun getSizeOfOptionalHeader ()S
+	public fun getTimeDateStamp ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class space/iseki/pefile/DataDirectories {
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getArchitecture ()Lspace/iseki/pefile/DataDirectories$Item;
+	public fun getBaseRelocationTable ()Lspace/iseki/pefile/DataDirectories$Item;
+	public fun getBoundImport ()Lspace/iseki/pefile/DataDirectories$Item;
+	public fun getCertificateTable ()Lspace/iseki/pefile/DataDirectories$Item;
+	public fun getClrRuntimeHeader ()Lspace/iseki/pefile/DataDirectories$Item;
+	public fun getDebug ()Lspace/iseki/pefile/DataDirectories$Item;
+	public fun getDelayImportDescriptor ()Lspace/iseki/pefile/DataDirectories$Item;
+	public fun getExceptionTable ()Lspace/iseki/pefile/DataDirectories$Item;
+	public fun getExportTable ()Lspace/iseki/pefile/DataDirectories$Item;
+	public fun getGlobalPtr ()Lspace/iseki/pefile/DataDirectories$Item;
+	public fun getIat ()Lspace/iseki/pefile/DataDirectories$Item;
+	public fun getImportTable ()Lspace/iseki/pefile/DataDirectories$Item;
+	public fun getLoadConfigTable ()Lspace/iseki/pefile/DataDirectories$Item;
+	public fun getResourceTable ()Lspace/iseki/pefile/DataDirectories$Item;
+	public fun getTlsTable ()Lspace/iseki/pefile/DataDirectories$Item;
+	public fun hashCode ()I
+	public fun length ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class space/iseki/pefile/DataDirectories$Item {
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getRva ()I
+	public fun getSize ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class space/iseki/pefile/DllCharacteristics {
+	public static final field APPCONTAINER S
+	public static final field DYNAMIC_BASE S
+	public static final field FORCE_INTEGRITY S
+	public static final field GUARD_CF S
+	public static final field HIGH_ENTROPY_VA S
+	public static final field NO_BIND S
+	public static final field NO_ISOLATION S
+	public static final field NO_SEH S
+	public static final field NX_COMPAT S
+	public static final field TERMINAL_SERVER_AWARE S
+	public static final field WDM_DRIVER S
+	public static fun toList (S)Ljava/util/List;
+	public static fun toString (S)Ljava/lang/String;
+}
+
+public abstract interface annotation class space/iseki/pefile/Field : java/lang/annotation/Annotation {
+	public abstract fun address ()Z
+	public abstract fun reference ()Ljava/lang/Class;
+}
+
+public final class space/iseki/pefile/ImportEntry {
+	public fun getName ()Ljava/lang/String;
+	public fun symbols ()Ljava/lang/Iterable;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class space/iseki/pefile/ImportSymbol {
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getName ()Ljava/lang/String;
+	public fun getOrdinal ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class space/iseki/pefile/ImportSymbolIterator {
+	public fun hasNext ()Z
+	public synthetic fun next ()Ljava/lang/Object;
+}
+
+public final class space/iseki/pefile/ImportSymbols : java/lang/Iterable {
+	public synthetic fun iterator ()Ljava/util/Iterator;
+	public fun iterator ()Lspace/iseki/pefile/ImportSymbolIterator;
+}
+
+public final class space/iseki/pefile/ImportTable : java/lang/Iterable {
+	public fun iterator ()Ljava/util/Iterator;
+}
+
+public final class space/iseki/pefile/ImportTableIterator {
+	public fun hasNext ()Z
+	public synthetic fun next ()Ljava/lang/Object;
+}
+
+public final class space/iseki/pefile/MachineTypes {
+	public static final field ALPHA S
+	public static final field ALPHA64 S
+	public static final field AM33 S
+	public static final field AMD64 S
+	public static final field ARM S
+	public static final field ARM64 S
+	public static final field ARMNT S
+	public static final field EBC S
+	public static final field I386 S
+	public static final field IA64 S
+	public static final field LOONGARCH32 S
+	public static final field LOONGARCH64 S
+	public static final field M32R S
+	public static final field MIPS16 S
+	public static final field MIPSFPU S
+	public static final field MIPSFPU16 S
+	public static final field POWERPC S
+	public static final field POWERPCFP S
+	public static final field R4000 S
+	public static final field RISCV128 S
+	public static final field RISCV32 S
+	public static final field RISCV64 S
+	public static final field SH3 S
+	public static final field SH3DSP S
+	public static final field SH4 S
+	public static final field SH5 S
+	public static final field THUMB S
+	public static final field UNKNOWN S
+	public static final field WCEMIPSV2 S
+	public static fun nameOf (S)Ljava/lang/String;
+}
+
+public final class space/iseki/pefile/OptionalHeader {
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getCheckSum ()I
+	public fun getDllCharacteristics ()S
+	public fun getFileAlignment ()I
+	public fun getImageBase ()J
+	public fun getLoaderFlags ()I
+	public fun getMajorImageVersion ()S
+	public fun getMajorOperatingSystemVersion ()S
+	public fun getMajorSubsystemVersion ()S
+	public fun getMinorImageVersion ()S
+	public fun getMinorOperatingSystemVersion ()S
+	public fun getMinorSubsystemVersion ()S
+	public fun getNumberOfRvaAndSizes ()I
+	public fun getSectionAlignment ()I
+	public fun getSizeOfHeaders ()I
+	public fun getSizeOfHeapCommit ()J
+	public fun getSizeOfHeapReserve ()J
+	public fun getSizeOfImage ()I
+	public fun getSizeOfStackCommit ()J
+	public fun getSizeOfStackReserve ()J
+	public fun getSubsystem ()S
+	public fun getWin32VersionValue ()I
+	public fun hashCode ()I
+	public fun isPE32Plus ()Z
+	public fun length ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class space/iseki/pefile/PEFile : java/lang/AutoCloseable {
+	public fun close ()V
+	public fun getCoffHeader ()Lspace/iseki/pefile/CoffHeader;
+	public fun getDataDirectories ()Lspace/iseki/pefile/DataDirectories;
+	public fun getImportTable ()Lspace/iseki/pefile/ImportTable;
+	public fun getOptionalHeader ()Lspace/iseki/pefile/OptionalHeader;
+	public fun getResourceRoot ()Lspace/iseki/pefile/ResourceNode;
+	public fun getStandardHeader ()Lspace/iseki/pefile/StandardHeader;
+	public fun listChildren (Lspace/iseki/pefile/ResourceNode;)Ljava/util/List;
+	public static fun open (Ljava/io/File;)Lspace/iseki/pefile/PEFile;
+	public static fun open (Ljava/nio/channels/SeekableByteChannel;)Lspace/iseki/pefile/PEFile;
+	public static fun open (Ljava/nio/file/Path;)Lspace/iseki/pefile/PEFile;
+}
+
+public class space/iseki/pefile/PEFileException : java/lang/RuntimeException {
+	public fun <init> (Ljava/lang/String;)V
+}
+
+public class space/iseki/pefile/ResourceNode {
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getCodePage ()I
+	public fun getDataRva ()I
+	public fun getResourceID ()I
+	public fun getResourceName ()Ljava/lang/String;
+	public fun getSize ()I
+	public fun hashCode ()I
+	public fun isDataEntry ()Z
+	public fun isDirectory ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public class space/iseki/pefile/ResourceWalker : java/lang/Iterable {
+	public fun <init> (Lspace/iseki/pefile/ResourceNode;)V
+	public fun iterator ()Ljava/util/Iterator;
+}
+
+public class space/iseki/pefile/ResourceWalker$Entry {
+	public fun getDepth ()I
+	public fun getNode ()Lspace/iseki/pefile/ResourceNode;
+	public fun getPath ()Ljava/util/List;
+}
+
+public final class space/iseki/pefile/Section {
+	public fun copyBytes ([BIII)V
+	public fun getCharacteristics ()I
+	public fun getPointerToRawData ()I
+	public fun getSizeOfRawData ()I
+	public fun getVirtualAddress ()I
+	public fun getVirtualSize ()I
+	public fun inputStream (I)Ljava/io/InputStream;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class space/iseki/pefile/SectionFlags {
+	public static final field ALIGN_1024BYTES I
+	public static final field ALIGN_128BYTES I
+	public static final field ALIGN_16BYTES I
+	public static final field ALIGN_1BYTES I
+	public static final field ALIGN_2048BYTES I
+	public static final field ALIGN_256BYTES I
+	public static final field ALIGN_2BYTES I
+	public static final field ALIGN_32BYTES I
+	public static final field ALIGN_4096BYTES I
+	public static final field ALIGN_4BYTES I
+	public static final field ALIGN_512BYTES I
+	public static final field ALIGN_64BYTES I
+	public static final field ALIGN_8192BYTES I
+	public static final field ALIGN_8BYTES I
+	public static final field CNT_CODE I
+	public static final field CNT_INITIALIZED_DATA I
+	public static final field CNT_UNINITIALIZED_DATA I
+	public static final field GPREL I
+	public static final field LNK_COMDAT I
+	public static final field LNK_INFO I
+	public static final field LNK_NRELOC_OVFL I
+	public static final field LNK_OTHER I
+	public static final field LNK_REMOVE I
+	public static final field MEM_16BIT I
+	public static final field MEM_DISCARDABLE I
+	public static final field MEM_EXECUTE I
+	public static final field MEM_LOCKED I
+	public static final field MEM_NOT_CACHED I
+	public static final field MEM_NOT_PAGED I
+	public static final field MEM_PRELOAD I
+	public static final field MEM_PURGEABLE I
+	public static final field MEM_READ I
+	public static final field MEM_SHARED I
+	public static final field MEM_WRITE I
+	public static final field TYPE_NO_PAD I
+	public static fun toList (I)Ljava/util/List;
+	public static fun toString (I)Ljava/lang/String;
+}
+
+public final class space/iseki/pefile/StandardHeader {
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getAddressOfEntryPoint ()I
+	public fun getBaseOfCode ()I
+	public fun getBaseOfData ()I
+	public fun getMajorLinkerVersion ()B
+	public fun getMinorLinkerVersion ()B
+	public fun getSizeOfCode ()I
+	public fun getSizeOfInitializedData ()I
+	public fun getSizeOfUninitializedData ()I
+	public fun hashCode ()I
+	public fun isPE32Plus ()Z
+	public fun length ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class space/iseki/pefile/WindowsSubsystems {
+	public static final field EFI_APPLICATION S
+	public static final field EFI_BOOT_SERVICE_DRIVER S
+	public static final field EFI_ROM S
+	public static final field EFI_RUNTIME_DRIVER S
+	public static final field NATIVE S
+	public static final field NATIVE_WINDOWS S
+	public static final field OS2_CUI S
+	public static final field POSIX_CUI S
+	public static final field UNKNOWN S
+	public static final field WINDOWS_BOOT_APPLICATION S
+	public static final field WINDOWS_CE_GUI S
+	public static final field WINDOWS_CUI S
+	public static final field WINDOWS_GUI S
+	public static final field XBOX S
+	public static fun toString (S)Ljava/lang/String;
+}
+
