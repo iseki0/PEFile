@@ -38,58 +38,27 @@ For `pom.xml`:
 
 ## Usage
 
-### Kotlin
+[Main.kt](example/src/main/kotlin/Main.kt)
 
 ```kotlin
-import space.iseki.pefile.PEFile
-import java.nio.file.Path
-
 fun main() {
-    val notepad = Path.of("C:\\Windows\\System32\\notepad.exe")
-    val pe = PEFile.of(notepad)
-    println(pe.coffHeader) // print COFF header
-    for (entry in pe.importTable) { // print import table
-        println(entry)
-        assert(entry.symbols().iterator().hasNext())
-        for (symbol in entry.symbols()) { // print imported symbols
-            println("  $symbol")
-        }
+  val notepad = Path.of(System.getenv("SystemRoot"), "System32", "notepad.exe")
+  PEFile.open(notepad).use { peFile->
+    // print COFF header
+    println(peFile.coffHeader)
+
+    // print import table
+    for (entry in peFile.importTable) {
+      println("DLL: ${entry.name}")
+      for (symbol in entry.symbols()) {
+        println("  $symbol")
+      }
     }
     // print resource tree
-    for (entry in ResourceWalker(pe.resourceRoot)) {
-        println("  ".repeat(entry.depth) + entry.node)
+    println("Resource Tree:")
+    for (entry in ResourceWalker(peFile.resourceRoot!!)) {
+      println("  ".repeat(entry.depth) + entry.node)
     }
+  }
 }
-```
-
-### Java
-
-```java
-import space.iseki.pefile.PEFile;
-import java.io.Exception;
-import java.nio.file.Path;
-
-public class Main {
-    public static void main(String[] args) {
-        try {
-            var notepad = Path.of("C:\\Windows\\System32\\notepad.exe");
-            PEFile pe = PEFile.of(Path.of(notepad));
-            System.out.println(pe.getCoffHeader()); // print COFF header
-            for (var entry : pe.getImportTable()) { // print import table
-                System.out.println(entry);
-                Assertions.assertTrue(entry.symbols().iterator().hasNext());
-                for (var symbol : entry.symbols()) { // print imported symbols
-                    System.out.println("  " + symbol);
-                }
-            }
-            // print resource tree
-            for (ResourceWalker.Entry entry : new ResourceWalker(pe.getResourceRoot())) {
-                System.out.println("  ".repeat(entry.getDepth()) + entry.getNode());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-}
-
 ```

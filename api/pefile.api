@@ -1,3 +1,7 @@
+public final class space/iseki/pefile/ Walker {
+	public static final fun walk (Lspace/iseki/pefile/ResourceNode;)Lkotlin/sequences/Sequence;
+}
+
 public final class space/iseki/pefile/Characteristics {
 	public static final field IMAGE_FILE_32BIT_MACHINE S
 	public static final field IMAGE_FILE_AGGRESSIVE_WS_TRIM S
