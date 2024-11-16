@@ -188,7 +188,7 @@ public final class PEFile implements AutoCloseable {
      *
      * @return the iterator
      */
-    public ImportTable getImportTable() {
+    public @NotNull ImportTable getImportTable() {
         return importTable;
     }
 
@@ -217,7 +217,7 @@ public final class PEFile implements AutoCloseable {
         return resourceRoot;
     }
 
-    public List<ResourceNode> listChildren(ResourceNode dirNode) {
+    public @NotNull List<@NotNull ResourceNode> listChildren(@NotNull ResourceNode dirNode) {
         if (dirNode.peFile != this) {
             throw new IllegalArgumentException("ResourceNode does not belong to this PEFile");
         }
