@@ -9,7 +9,12 @@ import java.nio.channels.FileChannel;
 
 @SuppressWarnings("unused")
 interface DataAccessor extends AutoCloseable {
-    void readFully(long pos, byte[] buf, int off, int len) throws IOException;
+    default void readFully(long pos, byte[] buf, int off, int len) throws IOException {
+        var n = readAtMost(pos, buf, off, len);
+        if (n != len) {
+            throw new EOFException("Expected " + len + " bytes, but only read " + n + " bytes");
+        }
+    }
 
     default void readFully(long pos, byte[] buf) throws IOException {
         readFully(pos, buf, 0, buf.length);

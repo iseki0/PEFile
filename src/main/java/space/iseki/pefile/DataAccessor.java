@@ -12,7 +12,12 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 interface DataAccessor extends AutoCloseable {
-    void readFully(long pos, byte[] buf, int off, int len) throws IOException;
+    default void readFully(long pos, byte[] buf, int off, int len) throws IOException {
+        var n = readAtMost(pos, buf, off, len);
+        if (n != len) {
+            throw new EOFException("Expected " + len + " bytes, but only read " + n + " bytes");
+        }
+    }
 
     default void readFully(long pos, byte[] buf) throws IOException {
         readFully(pos, buf, 0, buf.length);
@@ -63,28 +68,18 @@ final class SeekableByteChannelDataAccessor implements DataAccessor {
     }
 
     @Override
-    public void readFully(long pos, byte[] buf, int off, int len) throws IOException {
-        try {
-            lock.lock();
-            channel.position(pos);
-            var bb = ByteBuffer.wrap(buf, off, len);
-            while (bb.hasRemaining()) {
-                if (channel.read(bb) == -1) {
-                    throw new EOFException();
-                }
-            }
-        } finally {
-            lock.unlock();
-        }
-    }
-
-    @Override
     public int readAtMost(long pos, byte[] buf, int off, int len) throws IOException {
         try {
             lock.lock();
             channel.position(pos);
             var bb = ByteBuffer.wrap(buf, off, len);
-            return channel.read(bb);
+            int totalRead = 0;
+            while (bb.hasRemaining()) {
+                var n = channel.read(bb);
+                if (n == -1) break;
+                totalRead += n;
+            }
+            return totalRead;
         } finally {
             lock.unlock();
         }
