@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     `java-library`
     jacoco
@@ -7,14 +9,17 @@ plugins {
     signing
 }
 
-group = "space.iseki.pefile"
-version = "0.1-SNAPSHOT"
+allprojects {
+    group = "space.iseki.pefile"
+    version = "0.1-SNAPSHOT"
 
-repositories {
-    mavenCentral()
+    repositories {
+        mavenCentral()
+    }
 }
 
 dependencies {
+    compileOnly(kotlin("stdlib"))
     compileOnlyApi("org.jetbrains:annotations:26.0.1")
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
@@ -35,6 +40,12 @@ java {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
     withSourcesJar()
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget = JvmTarget.fromTarget("17")
+    }
 }
 
 tasks.jar {
