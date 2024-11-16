@@ -26,7 +26,7 @@ public final class ImportEntry {
         return U.structure("ImportEntry", U.fieldEscape("name", name), U.field("idt", idt));
     }
 
-    public @NotNull Iterable<ImportSymbol> symbols() {
+    public @NotNull Iterable<@NotNull ImportSymbol> symbols() {
         return new ImportSymbols(peFile, idt);
     }
 }

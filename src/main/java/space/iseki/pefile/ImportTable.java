@@ -12,7 +12,7 @@ public final class ImportTable implements Iterable<ImportEntry> {
     }
 
     @Override
-    public @NotNull Iterator<ImportEntry> iterator() {
+    public @NotNull Iterator<@NotNull ImportEntry> iterator() {
         return new ImportTableIterator(peFile);
     }
 }
