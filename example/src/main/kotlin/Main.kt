@@ -1,3 +1,5 @@
+package example
+
 import space.iseki.pefile.PEFile
 import space.iseki.pefile.walk
 import java.nio.file.Path

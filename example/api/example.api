@@ -1,5 +1,9 @@
-public final class MainKt {
+public final class example/MainKt {
 	public static final fun main ()V
 	public static synthetic fun main ([Ljava/lang/String;)V
+}
+
+public class example/PlaceHolder {
+	public fun <init> ()V
 }
 
