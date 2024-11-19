@@ -6,6 +6,15 @@
 
 Yet another library for Windows Portable Executable (PE) files
 
+## Features
+
+Reading the following data from PE file:
+ - COFF Header
+ - Optional Header(both of standard & Windows-specific fields)
+ - Section Lists
+ - Import Table(DLL names and symbols)
+ - Resource Tree
+
 ## Requirements
  
 - Java 17 or later
