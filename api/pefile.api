@@ -81,6 +81,9 @@ public final class space/iseki/pefile/DllCharacteristics {
 	public static fun toString (S)Ljava/lang/String;
 }
 
+public class space/iseki/pefile/ExportTable {
+}
+
 public abstract interface annotation class space/iseki/pefile/Field : java/lang/annotation/Annotation {
 	public abstract fun address ()Z
 	public abstract fun reference ()Ljava/lang/Class;
@@ -185,9 +188,11 @@ public final class space/iseki/pefile/PEFile : java/lang/AutoCloseable {
 	public fun close ()V
 	public fun getCoffHeader ()Lspace/iseki/pefile/CoffHeader;
 	public fun getDataDirectories ()Lspace/iseki/pefile/DataDirectories;
+	public fun getExportTable ()Lspace/iseki/pefile/ExportTable;
 	public fun getImportTable ()Lspace/iseki/pefile/ImportTable;
 	public fun getOptionalHeader ()Lspace/iseki/pefile/OptionalHeader;
 	public fun getResourceRoot ()Lspace/iseki/pefile/ResourceNode;
+	public fun getSections ()Ljava/util/List;
 	public fun getStandardHeader ()Lspace/iseki/pefile/StandardHeader;
 	public fun listChildren (Lspace/iseki/pefile/ResourceNode;)Ljava/util/List;
 	public static fun open (Ljava/io/File;)Lspace/iseki/pefile/PEFile;
@@ -226,6 +231,7 @@ public class space/iseki/pefile/ResourceWalker$Entry {
 public final class space/iseki/pefile/Section {
 	public fun copyBytes ([BIII)V
 	public fun getCharacteristics ()I
+	public fun getName ()Ljava/lang/String;
 	public fun getPointerToRawData ()I
 	public fun getSizeOfRawData ()I
 	public fun getVirtualAddress ()I
