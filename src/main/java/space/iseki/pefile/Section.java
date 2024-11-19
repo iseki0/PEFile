@@ -53,7 +53,6 @@ public final class Section {
     }
 
     /**
-     *
      * @see SectionFlags#toString(int)
      */
     public int getCharacteristics() {
@@ -79,6 +78,7 @@ public final class Section {
      * @param off the offset within the buffer {@code buf} where writing begins
      * @param len the number of bytes to copy
      * @throws IOException if an I/O error occurs during reading
+     * @throws IllegalStateException if the underlying file is already closed
      */
     public void copyBytes(byte @NotNull [] buf, int rva, int off, int len) throws IOException {
         Objects.checkFromIndexSize(off, len, buf.length);
@@ -116,7 +116,17 @@ public final class Section {
                 if (U.ge(pos, U.add(virtualAddress, virtualSize))) return -1;
                 var totalRead = U.min(U.sub(U.add(virtualSize, virtualAddress), pos), len);
                 if (totalRead < 1) return -1;
-                copyBytes(b, pos, off, totalRead);
+                try {
+                    copyBytes(b, pos, off, totalRead);
+                } catch (IllegalStateException e) {
+                    var msg = e.getMessage();
+                    // todo: ugly, but because of multi-release code splitting,
+                    //  I'm not sure we should create a new Exception type.
+                    if (msg != null && msg.contains("already be closed")) {
+                        throw new IOException("The underlying file might already be closed", e);
+                    }
+                    throw e;
+                }
                 pos += totalRead;
                 return pos;
             }

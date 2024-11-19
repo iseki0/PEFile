@@ -3,6 +3,7 @@ package space.iseki.pefile;
 import java.io.EOFException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.channels.ClosedChannelException;
 import java.nio.channels.FileChannel;
 import java.nio.channels.SeekableByteChannel;
 import java.nio.file.Path;
@@ -80,6 +81,8 @@ final class SeekableByteChannelDataAccessor implements DataAccessor {
                 totalRead += n;
             }
             return totalRead;
+        } catch (ClosedChannelException e) {
+            throw new IllegalStateException("The file might already be closed", e);
         } finally {
             lock.unlock();
         }
@@ -87,7 +90,12 @@ final class SeekableByteChannelDataAccessor implements DataAccessor {
 
     @Override
     public void close() throws IOException {
-        if (closeUnderlyingChannel) channel.close();
+        if (closeUnderlyingChannel) {
+            try {
+                channel.close();
+            } catch (ClosedChannelException ignored) {
+            }
+        }
     }
 }
 

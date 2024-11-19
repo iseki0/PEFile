@@ -231,6 +231,16 @@ public final class PEFile implements AutoCloseable {
         return List.of(sectionSet.sections);
     }
 
+    /**
+     * Close the underlying file.
+     * <p>
+     * This method will close the underlying file channel.
+     * If the file channel is already closed, this method will do nothing.
+     * After this method is called, the PEFile instance is no longer usable, some methods might throw
+     * {@link IllegalStateException} if called.
+     *
+     * @throws UncheckedIOException if an I/O error occurs
+     */
     @Override
     public void close() throws Exception {
         accessor.close();
@@ -240,6 +250,22 @@ public final class PEFile implements AutoCloseable {
         return resourceRoot;
     }
 
+    /**
+     * List children of a resource directory.
+     * <p>
+     * The returned might throw the following exceptions:
+     * <ul>
+     *     <li>{@link PEFileException} if the PE file is invalid</li>
+     *     <li>{@link UncheckedIOException} if an I/O error occurs</li>
+     *     <li>{@link IllegalStateException} if the underlying file is already closed</li>
+     *     </ul>
+     *
+     * @param dirNode the directory node
+     * @return the list of children, unmodifiable
+     * @throws IllegalArgumentException if the dirNode does not belong to this PEFile
+     * @throws PEFileException          if the PE file is invalid
+     * @throws NullPointerException     if the dirNode is null
+     */
     public @NotNull List<@NotNull ResourceNode> listChildren(@NotNull ResourceNode dirNode) {
         if (dirNode.peFile != this) {
             throw new IllegalArgumentException("ResourceNode does not belong to this PEFile");

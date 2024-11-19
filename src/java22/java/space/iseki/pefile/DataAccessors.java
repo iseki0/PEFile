@@ -6,6 +6,8 @@ import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
 import java.nio.channels.FileChannel;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 @SuppressWarnings("unused")
 interface DataAccessor extends AutoCloseable {
@@ -28,6 +30,7 @@ interface DataAccessor extends AutoCloseable {
 }
 
 class MemorySegmentArenaDataAccessor implements DataAccessor {
+    private final ReadWriteLock closeLock = new ReentrantReadWriteLock();
     private final MemorySegment segment;
     private final Arena arena;
 
@@ -42,13 +45,21 @@ class MemorySegmentArenaDataAccessor implements DataAccessor {
         if (pos > bs || pos + Integer.toUnsignedLong(len) > bs) {
             throw new EOFException();
         }
-        MemorySegment.copy(segment,
-                           ValueLayout.JAVA_BYTE,
-                           pos,
-                           MemorySegment.ofArray(buf),
-                           ValueLayout.JAVA_BYTE,
-                           off,
-                           len);
+        try {
+            closeLock.readLock().lock();
+            if (!arena.scope().isAlive()) {
+                throw new IllegalStateException("The file might already be closed");
+            }
+            MemorySegment.copy(segment,
+                               ValueLayout.JAVA_BYTE,
+                               pos,
+                               MemorySegment.ofArray(buf),
+                               ValueLayout.JAVA_BYTE,
+                               off,
+                               len);
+        } finally {
+            closeLock.readLock().unlock();
+        }
     }
 
     @Override
@@ -64,7 +75,14 @@ class MemorySegmentArenaDataAccessor implements DataAccessor {
 
     @Override
     public void close() {
-        arena.close();
+        if (!arena.scope().isAlive()) return;
+        try {
+            closeLock.writeLock().lock();
+            if (!arena.scope().isAlive()) return;
+            arena.close();
+        } finally {
+            closeLock.writeLock().unlock();
+        }
     }
 }
 
