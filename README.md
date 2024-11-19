@@ -1,6 +1,6 @@
 # PEFile
 
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/iseki0/PEFile/build.yml)
+[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/iseki0/PEFile/build.yml)](https://github.com/iseki0/PEFile/actions/workflows/build.yml)
 [![Maven Central Version](https://img.shields.io/maven-central/v/space.iseki.pefile/pefile)](https://central.sonatype.com/artifact/space.iseki.pefile/pefile)
 ![License](https://img.shields.io/github/license/iseki0/PEFile)
 
