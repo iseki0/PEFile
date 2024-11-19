@@ -68,11 +68,11 @@ public final class PEFile implements AutoCloseable {
      *
      * @param file the file
      * @return the PEFile
-     * @throws IOException     if an I/O error occurs
-     * @throws PEFileException if the file is not a valid PE file
+     * @throws UncheckedIOException if an I/O error occurs
+     * @throws PEFileException      if the file is not a valid PE file
      */
-    public static @NotNull PEFile open(@NotNull File file) throws IOException {
-        return open(file.toPath());
+    public static @NotNull PEFile open(@NotNull File file) {
+        return wrapUncheckIOException(() -> open(file.toPath()));
     }
 
     /**
@@ -80,11 +80,11 @@ public final class PEFile implements AutoCloseable {
      *
      * @param path the path of the PE file
      * @return the PEFile
-     * @throws IOException     if an I/O error occurs
-     * @throws PEFileException if the file is not a valid PE file
+     * @throws UncheckedIOException if an I/O error occurs
+     * @throws PEFileException      if the file is not a valid PE file
      */
-    public static @NotNull PEFile open(@NotNull Path path) throws IOException {
-        return safeOpen(DataAccessors.of(path));
+    public static @NotNull PEFile open(@NotNull Path path) {
+        return wrapUncheckIOException(() -> safeOpen(DataAccessors.of(path)));
     }
 
     /**
@@ -94,11 +94,11 @@ public final class PEFile implements AutoCloseable {
      *
      * @param channel the channel will be closed when the PEFile is closed.
      * @return the PEFile
-     * @throws IOException     if an I/O error occurs
-     * @throws PEFileException if the file is not a valid PE file
+     * @throws UncheckedIOException if an I/O error occurs
+     * @throws PEFileException      if the file is not a valid PE file
      */
-    public static @NotNull PEFile open(@NotNull SeekableByteChannel channel) throws IOException {
-        return open(new SeekableByteChannelDataAccessor(channel));
+    public static @NotNull PEFile open(@NotNull SeekableByteChannel channel) {
+        return wrapUncheckIOException(() -> open(new SeekableByteChannelDataAccessor(channel)));
     }
 
     private static long seekToCoffHeader(DataAccessor accessor) throws IOException {
@@ -183,6 +183,14 @@ public final class PEFile implements AutoCloseable {
             sections[i] = new Section(s, accessor);
         }
         return new PEFile(accessor, sections, coffHeader, standardHeader, optionalHeader, dataDirectory);
+    }
+
+    private static <R> R wrapUncheckIOException(Wrap<R> callable) {
+        try {
+            return callable.call();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     /**
@@ -308,6 +316,10 @@ public final class PEFile implements AutoCloseable {
                                   Integer.toUnsignedLong(len) +
                                   " at offset: " +
                                   Integer.toUnsignedLong(entryOffset));
+    }
+
+    private interface Wrap<R> {
+        R call() throws IOException;
     }
 }
 

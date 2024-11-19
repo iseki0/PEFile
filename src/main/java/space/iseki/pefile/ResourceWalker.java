@@ -51,7 +51,7 @@ public class ResourceWalker implements Iterable<ResourceWalker.@NotNull Entry> {
         };
     }
 
-    public class Entry {
+    public static class Entry {
         final ResourceNode[] path;
 
         Entry(ResourceNode[] path) {
