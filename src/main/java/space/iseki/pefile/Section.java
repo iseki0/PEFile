@@ -56,6 +56,10 @@ public final class Section {
         return characteristics;
     }
 
+    public @NotNull String getName() {
+        return tableItem.name();
+    }
+
     /**
      * Copies bytes from the specified section into the target buffer {@code buf}.
      *
