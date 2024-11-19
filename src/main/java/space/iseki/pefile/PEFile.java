@@ -25,6 +25,7 @@ public final class PEFile implements AutoCloseable {
     final DataDirectories dataDirectories;
     private final DataAccessor accessor;
     private final ImportTable importTable = new ImportTable(this);
+    private final ExportTable exportTable = new ExportTable(this);
     private final Section rsrcSection;
     private final ResourceNode resourceRoot;
 
@@ -191,6 +192,10 @@ public final class PEFile implements AutoCloseable {
      */
     public @NotNull ImportTable getImportTable() {
         return importTable;
+    }
+
+    public @NotNull ExportTable getExportTable() {
+        return exportTable;
     }
 
     public @NotNull CoffHeader getCoffHeader() {
