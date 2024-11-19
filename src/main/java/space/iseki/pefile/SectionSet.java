@@ -5,7 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 final class SectionSet {
-    private final Section[] sections;
+    final Section[] sections;
 
     SectionSet(Section[] sections) {
         this.sections = sections;

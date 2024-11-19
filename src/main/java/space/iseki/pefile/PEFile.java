@@ -2,6 +2,7 @@ package space.iseki.pefile;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Unmodifiable;
 
 import java.io.EOFException;
 import java.io.File;
@@ -206,6 +207,15 @@ public final class PEFile implements AutoCloseable {
 
     public @NotNull OptionalHeader getOptionalHeader() {
         return optionalHeader;
+    }
+
+    /**
+     * Returns an unmodifiable list of sections.
+     *
+     * @return the list of sections, unmodifiable
+     */
+    public @Unmodifiable @NotNull List<@NotNull Section> getSections() {
+        return List.of(sectionSet.sections);
     }
 
     @Override
