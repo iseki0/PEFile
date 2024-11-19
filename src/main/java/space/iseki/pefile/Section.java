@@ -52,6 +52,10 @@ public final class Section {
         return virtualSize;
     }
 
+    /**
+     *
+     * @see SectionFlags#toString(int)
+     */
     public int getCharacteristics() {
         return characteristics;
     }
