@@ -16,6 +16,17 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Represents an opened PE file.
+ *
+ * <p>
+ * All methods on the instance are thread-safe, but there's no guarantee of the returned objects.
+ * <p>
+ * Once the {@code PEFile} instance has been closed,
+ * only {@link PEFile#close()} and methods inherited from {@link Object} should be invoked.
+ * Invoking any other method after the file is closed may result unreliable,
+ * and an {@link IllegalStateException} is not guaranteed to be thrown in such cases.
+ */
 public final class PEFile implements AutoCloseable {
     static final long PE_SIGNATURE_LE = 0x00004550;
     final SectionSet sectionSet;
@@ -194,14 +205,23 @@ public final class PEFile implements AutoCloseable {
     }
 
     /**
-     * Returns an iterator over the import table.
+     * Returns an object that provides an iterator over the import table.
+     * <p/>
+     * The returned iterator is not thread-safe.
      *
-     * @return the iterator
+     * @return the object will be unusable after the PEFile is closed
      */
     public @NotNull ImportTable getImportTable() {
         return importTable;
     }
 
+    /**
+     * Returns an object that provides an iterator over the export table.
+     * <p/>
+     * The returned iterator is not thread-safe.
+     *
+     * @return the object will be unusable after the PEFile is closed
+     */
     public @NotNull ExportTable getExportTable() {
         return exportTable;
     }
@@ -224,8 +244,9 @@ public final class PEFile implements AutoCloseable {
 
     /**
      * Returns an unmodifiable list of sections.
-     *
-     * @return the list of sections, unmodifiable
+     * <p>
+     * After the PEFile is closed, the returned list is still usable, but the sections are unreadable.
+     * @return the list of sections, immutable
      */
     public @Unmodifiable @NotNull List<@NotNull Section> getSections() {
         return List.of(sectionSet.sections);
@@ -237,7 +258,7 @@ public final class PEFile implements AutoCloseable {
      * This method will close the underlying file channel.
      * If the file channel is already closed, this method will do nothing.
      * After this method is called, the PEFile instance is no longer usable, some methods might throw
-     * {@link IllegalStateException} if called.
+     * {@link IllegalStateException} when invoked.
      *
      * @throws UncheckedIOException if an I/O error occurs
      */
@@ -251,9 +272,9 @@ public final class PEFile implements AutoCloseable {
     }
 
     /**
-     * List children of a resource directory.
+     * Returns a lazy-list of children for a given resource directory.
      * <p>
-     * The returned might throw the following exceptions:
+     * The returned list might throw the following exceptions:
      * <ul>
      *     <li>{@link PEFileException} if the PE file is invalid</li>
      *     <li>{@link UncheckedIOException} if an I/O error occurs</li>
