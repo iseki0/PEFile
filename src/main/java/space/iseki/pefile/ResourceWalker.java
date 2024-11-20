@@ -17,6 +17,7 @@ public class ResourceWalker implements Iterable<ResourceWalker.@NotNull Entry> {
         Deque<ResourceNode> q2 = new ArrayDeque<>();
         q.add(root.peFile.listChildren(root).iterator());
         q2.add(root);
+        var visitedMap = new HashSet<Integer>();
         return new AbstractIterator<>() {
             @Override
             protected void computeNext() {
@@ -25,12 +26,16 @@ public class ResourceWalker implements Iterable<ResourceWalker.@NotNull Entry> {
                         end();
                         return;
                     }
-                    if (q.size() > 32){
+                    if (q.size() > 32) {
                         throw new PEFileException("Resource tree too deep");
                     }
                     var last = q.getLast();
                     if (last.hasNext()) {
                         var n = last.next();
+                        if (visitedMap.contains(n.irdOffset)) {
+                            continue;
+                        }
+                        visitedMap.add(n.irdOffset);
                         var path = new ResourceNode[q2.size() + 1];
                         var i = 0;
                         for (var p : q2) {
