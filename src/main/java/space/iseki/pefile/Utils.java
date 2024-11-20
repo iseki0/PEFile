@@ -47,8 +47,8 @@ final class U {
         return new String(buf, off, len, StandardCharsets.ISO_8859_1);
     }
 
-    public static String hex(byte[] bytes, int off, int len){
-        return HexFormat.of().formatHex(bytes, off, len);
+    public static String hex(byte[] bytes, int off, int len) {
+        return "0x" + HexFormat.of().formatHex(bytes, off, len);
     }
 
     public static String hex(int i) {
