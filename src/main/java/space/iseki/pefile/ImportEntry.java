@@ -23,7 +23,7 @@ public final class ImportEntry {
 
     @Override
     public String toString() {
-        return U.structure("ImportEntry", U.fieldEscape("name", name), U.field("idt", idt));
+        return U.structure("ImportEntry", name != null ? U.fieldEscape("name", name) : "null", U.field("idt", idt));
     }
 
     public @NotNull Iterable<@NotNull ImportSymbol> symbols() {
@@ -40,6 +40,7 @@ record ImportDirectoryTable(int importLookupTableRva,
 
     /**
      * Parse ImportDirectoryTable from a byte array
+     *
      * @param buf byte array
      * @param off offset
      * @return ImportDirectoryTable
