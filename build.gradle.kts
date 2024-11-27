@@ -25,7 +25,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
 }
 
-val java22 by sourceSets.creating
+val java22: SourceSet by sourceSets.creating
 
 tasks.getByName(java22.compileJavaTaskName) {
     this as JavaCompile
