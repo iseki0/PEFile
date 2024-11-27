@@ -165,6 +165,10 @@ publishing {
                     system = "GitHub"
                     url = "$projectUrl/issues"
                 }
+                ciManagement {
+                    system = "GitHub"
+                    url = "$projectUrl/actions"
+                }
             }
         }
     }
