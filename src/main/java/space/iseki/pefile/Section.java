@@ -18,10 +18,10 @@ public final class Section {
     private final int virtualAddress;
     private final int virtualSize;
     private final int characteristics;
-    private final DataAccessor accessor;
+    private final WrappedDataAccessor accessor;
     private final SectionTableItem tableItem;
 
-    Section(SectionTableItem tableItem, DataAccessor accessor) {
+    Section(SectionTableItem tableItem, WrappedDataAccessor accessor) {
         this.pointerToRawData = tableItem.pointerToRawData();
         this.sizeOfRawData = tableItem.sizeOfRawData();
         this.virtualAddress = tableItem.virtualAddress();

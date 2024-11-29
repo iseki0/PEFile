@@ -34,13 +34,13 @@ public final class PEFile implements AutoCloseable {
     final StandardHeader standardHeader;
     final OptionalHeader optionalHeader;
     final DataDirectories dataDirectories;
-    private final DataAccessor accessor;
+    private final WrappedDataAccessor accessor;
     private final ImportTable importTable = new ImportTable(this);
     private final ExportTable exportTable = new ExportTable(this);
     private final Section rsrcSection;
     private final ResourceNode resourceRoot;
 
-    PEFile(DataAccessor accessor,
+    PEFile(WrappedDataAccessor accessor,
            Section[] sections,
            CoffHeader coffHeader,
            StandardHeader standardHeader,
@@ -95,7 +95,7 @@ public final class PEFile implements AutoCloseable {
      * @throws PEFileException      if the file is not a valid PE file
      */
     public static @NotNull PEFile open(@NotNull Path path) {
-        return wrapUncheckIOException(() -> safeOpen(DataAccessors.of(path)));
+        return wrapUncheckIOException(() -> safeOpen(WrappedDataAccessor.of(path)));
     }
 
     /**
@@ -109,10 +109,10 @@ public final class PEFile implements AutoCloseable {
      * @throws PEFileException      if the file is not a valid PE file
      */
     public static @NotNull PEFile open(@NotNull SeekableByteChannel channel) {
-        return wrapUncheckIOException(() -> open(new SeekableByteChannelDataAccessor(channel)));
+        return wrapUncheckIOException(() -> open(WrappedDataAccessor.of(channel)));
     }
 
-    private static long seekToCoffHeader(DataAccessor accessor) throws IOException {
+    private static long seekToCoffHeader(WrappedDataAccessor accessor) throws IOException {
         try {
             var buf = new byte[4];
             accessor.readFully(0x3c, buf);
@@ -130,7 +130,7 @@ public final class PEFile implements AutoCloseable {
         }
     }
 
-    private static PEFile safeOpen(DataAccessor accessor) throws IOException {
+    private static PEFile safeOpen(WrappedDataAccessor accessor) throws IOException {
         try {
             return open(accessor);
         } catch (Throwable th) {
@@ -143,7 +143,7 @@ public final class PEFile implements AutoCloseable {
         }
     }
 
-    static PEFile open(DataAccessor accessor) throws IOException {
+    static PEFile open(WrappedDataAccessor accessor) throws IOException {
         var peBeginAt = seekToCoffHeader(accessor);
         var data = new byte[4096];
         var read = accessor.readAtMost(peBeginAt, data);
@@ -204,6 +204,7 @@ public final class PEFile implements AutoCloseable {
         }
     }
 
+
     /**
      * Returns an object that provides an iterator over the import table.
      * <p/>
@@ -246,6 +247,7 @@ public final class PEFile implements AutoCloseable {
      * Returns an unmodifiable list of sections.
      * <p>
      * After the PEFile is closed, the returned list is still usable, but the sections are unreadable.
+     *
      * @return the list of sections, immutable
      */
     public @Unmodifiable @NotNull List<@NotNull Section> getSections() {
