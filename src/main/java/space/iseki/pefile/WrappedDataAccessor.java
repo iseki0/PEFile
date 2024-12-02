@@ -59,6 +59,10 @@ final class WrappedDataAccessor implements AutoCloseable {
         return readAtMost(pos, buf, 0, buf.length);
     }
 
+    public boolean isOpen() {
+        return dataAccessor.isOpen();
+    }
+
     @Override
     public void close() throws Exception {
         dataAccessor.close();

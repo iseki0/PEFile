@@ -116,17 +116,10 @@ public final class Section {
                 if (U.ge(pos, U.add(virtualAddress, virtualSize))) return -1;
                 var totalRead = U.min(U.sub(U.add(virtualSize, virtualAddress), pos), len);
                 if (totalRead < 1) return -1;
-                try {
-                    copyBytes(b, pos, off, totalRead);
-                } catch (IllegalStateException e) {
-                    var msg = e.getMessage();
-                    // todo: ugly, but because of multi-release code splitting,
-                    //  I'm not sure we should create a new Exception type.
-                    if (msg != null && msg.contains("already be closed")) {
-                        throw new IOException("The underlying file might already be closed", e);
-                    }
-                    throw e;
+                if (!accessor.isOpen()) {
+                    throw new IOException("The underlying file might already be closed");
                 }
+                copyBytes(b, pos, off, totalRead);
                 pos += totalRead;
                 return pos;
             }
