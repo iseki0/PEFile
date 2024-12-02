@@ -20,31 +20,6 @@ Reading the following data from PE file:
 - Java 17 or later
   - For Java >= 22, we read the PE file by MMAP
 
-## Installation
-
-For `build.gradle.kts`:
-```kotlin
-dependencies {
-    implementation("space.iseki.pefile:pefile:0.+")
-}
-```
-
-For `build.gradle`:
-```groovy
-dependencies {
-    implementation 'space.iseki.pefile:pefile:0.+'
-}
-```
-
-For `pom.xml`:
-```xml
-<dependency>
-  <groupId>space.iseki.pefile</groupId>
-  <artifactId>pefile</artifactId>
-  <version>0.+</version>
-</dependency>
-```
-
 ## Usage
 
 [Main.kt](example/src/main/kotlin/Main.kt)
