@@ -77,7 +77,7 @@ public final class Section {
      * @param rva the starting Relative Virtual Address (RVA) within the section to copy from
      * @param off the offset within the buffer {@code buf} where writing begins
      * @param len the number of bytes to copy
-     * @throws IOException if an I/O error occurs during reading
+     * @throws IOException           if an I/O error occurs during reading
      * @throws IllegalStateException if the underlying file is already closed
      */
     public void copyBytes(byte @NotNull [] buf, int rva, int off, int len) throws IOException {
