@@ -11,7 +11,7 @@ plugins {
 
 allprojects {
     group = "space.iseki.pefile"
-    version = "0.3-SNAPSHOT"
+    version = properties["version"]?.let { it as String }?.takeIf { "unspecified" !in it } ?: "0.3-SNAPSHOT"
 
     repositories {
         mavenCentral()
